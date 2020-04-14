@@ -14,6 +14,9 @@ import io.ktor.websocket.*
 import io.ktor.http.cio.websocket.*
 import java.time.*
 import io.ktor.gson.*
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -65,10 +68,11 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
+        trace { application.log.trace(it.buildText()) }
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+           Service.home(call)
         }
-
+        api()
         // Static feature. Try to access `/static/ktor_logo.svg`
         static("/static") {
             resources("static")
@@ -89,12 +93,13 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
-        }
     }
 }
+data class R<T>(
+    val code:Int=0,
+    val msg:String="",
+    val data:T?=null
+)
 
 data class MySession(val count: Int = 0)
 
