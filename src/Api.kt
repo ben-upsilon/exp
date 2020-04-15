@@ -12,7 +12,7 @@ import java.nio.file.Files
 fun Routing.api() = route("api"){
     route("v1") {
         get("/home") {
-            Q.init()
+
             call.respond(R(0,"ok", mapOf("hello" to "world")))
         }
         get("/files"){
