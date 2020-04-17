@@ -13,6 +13,7 @@ import io.ktor.http.cio.websocket.pingPeriod
 import io.ktor.http.cio.websocket.readText
 import io.ktor.http.cio.websocket.timeout
 import io.ktor.http.content.default
+import io.ktor.http.content.files
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
 import io.ktor.request.path
@@ -88,6 +89,8 @@ fun Application.module(testing: Boolean = false) {
         }
         static("/web"){
             resources("web")
+            files("css")
+            files("js")
             default("index.html")
         }
 
